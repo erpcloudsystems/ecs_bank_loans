@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include ecs_bank_loans *.css
+recursive-include ecs_bank_loans *.csv
+recursive-include ecs_bank_loans *.html
+recursive-include ecs_bank_loans *.ico
+recursive-include ecs_bank_loans *.js
+recursive-include ecs_bank_loans *.json
+recursive-include ecs_bank_loans *.md
+recursive-include ecs_bank_loans *.png
+recursive-include ecs_bank_loans *.py
+recursive-include ecs_bank_loans *.svg
+recursive-include ecs_bank_loans *.txt
+recursive-exclude ecs_bank_loans *.pyc
