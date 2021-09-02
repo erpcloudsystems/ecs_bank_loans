@@ -1,0 +1,508 @@
+{
+ "actions": [],
+ "allow_import": 1,
+ "autoname": "naming_series:",
+ "creation": "2021-08-24 17:14:53.614074",
+ "doctype": "DocType",
+ "document_type": "Document",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "naming_series",
+  "applicant",
+  "bank_account",
+  "current_account",
+  "receivable_account",
+  "payable_account",
+  "loan_application",
+  "column_break_3",
+  "company",
+  "posting_date",
+  "status",
+  "section_break_8",
+  "loan_type",
+  "loan_amount",
+  "net_loan_amount",
+  "interest_amount",
+  "disbursement_date",
+  "disbursed_amount",
+  "column_break_11",
+  "no_of_repayments",
+  "repayment_type",
+  "repayment_amount",
+  "repayment_start_date",
+  "payment_frequency",
+  "repayment_every",
+  "administrative_expenses",
+  "administrative_expenses_depends_on",
+  "percentage",
+  "column_break_33",
+  "administrative_expenses_amount",
+  "included_in_loan_amount",
+  "administrative_expenses_account",
+  "section_break_62",
+  "payable_interest_account",
+  "loan_account_2",
+  "receipt_account",
+  "column_break_65",
+  "interest_expense_account",
+  "penalty_expense_account",
+  "section_break_15",
+  "early_payment",
+  "early_payment_commission",
+  "make_early_payment",
+  "early_paid",
+  "repayment_schedule",
+  "section_break_17",
+  "total_principal_payable",
+  "total_interest_payable",
+  "total_payment",
+  "column_break_19",
+  "total_principal_paid",
+  "total_interest_paid",
+  "total_amount_paid",
+  "amended_from"
+ ],
+ "fields": [
+  {
+   "default": "BANK-LOAN-.YYYY.-.#####",
+   "fieldname": "naming_series",
+   "fieldtype": "Select",
+   "hidden": 1,
+   "label": "Naming Series",
+   "options": "BANK-LOAN-.YYYY.-.#####",
+   "read_only": 1
+  },
+  {
+   "fieldname": "applicant",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Bank",
+   "options": "Bank",
+   "reqd": 1
+  },
+  {
+   "fieldname": "loan_application",
+   "fieldtype": "Link",
+   "label": "Loan Application",
+   "no_copy": 1,
+   "options": "Loan Application"
+  },
+  {
+   "fieldname": "column_break_3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "company",
+   "fieldtype": "Link",
+   "in_standard_filter": 1,
+   "label": "Company",
+   "options": "Company",
+   "remember_last_selected_value": 1,
+   "reqd": 1
+  },
+  {
+   "default": "Today",
+   "fieldname": "posting_date",
+   "fieldtype": "Date",
+   "in_list_view": 1,
+   "label": "Posting Date",
+   "no_copy": 1,
+   "reqd": 1
+  },
+  {
+   "default": "Sanctioned",
+   "depends_on": "eval:doc.docstatus == 1",
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "in_standard_filter": 1,
+   "label": "Status",
+   "no_copy": 1,
+   "options": "Sanctioned\nPartially Disbursed\nDisbursed\nLoan Closure Requested\nClosed",
+   "read_only": 1
+  },
+  {
+   "fieldname": "section_break_8",
+   "fieldtype": "Section Break",
+   "label": "Loan Details"
+  },
+  {
+   "fieldname": "loan_type",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Loan Type",
+   "options": "Loan Type",
+   "reqd": 1
+  },
+  {
+   "fieldname": "loan_amount",
+   "fieldtype": "Currency",
+   "label": "Loan Amount",
+   "non_negative": 1,
+   "options": "Company:company:default_currency",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.status==\"Disbursed\"",
+   "fieldname": "disbursement_date",
+   "fieldtype": "Date",
+   "label": "Disbursement Date",
+   "no_copy": 1
+  },
+  {
+   "fieldname": "disbursed_amount",
+   "fieldtype": "Currency",
+   "label": "Disbursed Amount",
+   "no_copy": 1,
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_11",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "repayment_start_date",
+   "fieldtype": "Date",
+   "label": "Repayment Start Date",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_15",
+   "fieldtype": "Section Break",
+   "label": "Repayment Schedule"
+  },
+  {
+   "allow_bulk_edit": 1,
+   "allow_on_submit": 1,
+   "fieldname": "repayment_schedule",
+   "fieldtype": "Table",
+   "label": "Repayment Schedule",
+   "no_copy": 1,
+   "options": "Bank Loan Repayment Schedule"
+  },
+  {
+   "fieldname": "section_break_17",
+   "fieldtype": "Section Break",
+   "label": "Totals"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_payment",
+   "fieldtype": "Currency",
+   "label": "Total Payable Amount",
+   "no_copy": 1,
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_principal_paid",
+   "fieldtype": "Currency",
+   "label": "Total Principal Paid",
+   "no_copy": 1,
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_19",
+   "fieldtype": "Column Break"
+  },
+  {
+   "default": "0",
+   "fieldname": "total_interest_payable",
+   "fieldtype": "Currency",
+   "label": "Total Interest Payable",
+   "no_copy": 1,
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "fieldname": "total_amount_paid",
+   "fieldtype": "Currency",
+   "label": "Total Amount Paid",
+   "no_copy": 1,
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "amended_from",
+   "fieldtype": "Link",
+   "label": "Amended From",
+   "no_copy": 1,
+   "options": "Bank Loan",
+   "print_hide": 1,
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.applicant",
+   "fieldname": "bank_account",
+   "fieldtype": "Link",
+   "label": "Bank Account",
+   "mandatory_depends_on": "eval:doc.applicant",
+   "options": "Bank Account"
+  },
+  {
+   "depends_on": "eval:doc.bank_account",
+   "fetch_from": "bank_account.account",
+   "fieldname": "current_account",
+   "fieldtype": "Link",
+   "label": "Current Account",
+   "options": "Account",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.bank_account",
+   "fetch_from": "bank_account.collection_fee_account",
+   "fieldname": "receivable_account",
+   "fieldtype": "Link",
+   "label": "Receivable Account",
+   "options": "Bank Account",
+   "read_only": 1
+  },
+  {
+   "depends_on": "eval:doc.bank_account",
+   "fetch_from": "bank_account.payable_account",
+   "fieldname": "payable_account",
+   "fieldtype": "Link",
+   "label": "Payable Account",
+   "options": "Bank Account",
+   "read_only": 1
+  },
+  {
+   "fieldname": "net_loan_amount",
+   "fieldtype": "Currency",
+   "label": "Net Loan Amount",
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "fieldname": "interest_amount",
+   "fieldtype": "Currency",
+   "label": "Interest Amount",
+   "options": "Company:company:default_currency",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.repayment_type == \"Fixed\"",
+   "fieldname": "repayment_amount",
+   "fieldtype": "Currency",
+   "label": "Repayment Amount",
+   "mandatory_depends_on": "eval:doc.repayment_type == \"Fixed\"",
+   "options": "Company:company:default_currency"
+  },
+  {
+   "fieldname": "payment_frequency",
+   "fieldtype": "Select",
+   "label": "Repayment Frequency",
+   "options": "\nMonthly\nQuarterly\nSemi Annually\nAnnually\nOther",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.payment_frequency",
+   "description": "(In Days)",
+   "fieldname": "repayment_every",
+   "fieldtype": "Int",
+   "label": "Repayment Every",
+   "mandatory_depends_on": "eval:doc.payment_frequency == \"Other\"",
+   "read_only_depends_on": "eval:doc.payment_frequency != \"Other\""
+  },
+  {
+   "fieldname": "repayment_type",
+   "fieldtype": "Select",
+   "label": "Repayment Type",
+   "options": "\nFixed\nDecreasing",
+   "reqd": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_principal_payable",
+   "fieldtype": "Currency",
+   "label": "Total Principal Payable",
+   "no_copy": 1,
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "total_interest_paid",
+   "fieldtype": "Currency",
+   "label": "Total Interest Paid",
+   "no_copy": 1,
+   "options": "Company:company:default_currency",
+   "read_only": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "default": "0",
+   "depends_on": "eval:doc.status == \"Disbursed\"",
+   "fieldname": "early_payment",
+   "fieldtype": "Check",
+   "label": "Early Payment",
+   "no_copy": 1
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:doc.status == \"Disbursed\" && doc.early_payment",
+   "fieldname": "early_payment_commission",
+   "fieldtype": "Currency",
+   "label": "Early Payment Commission Amount",
+   "mandatory_depends_on": "eval:doc.early_payment",
+   "no_copy": 1,
+   "options": "Company:company:default_currency",
+   "read_only_depends_on": "eval:doc.early_paid"
+  },
+  {
+   "allow_on_submit": 1,
+   "depends_on": "eval:doc.status == \"Disbursed\" && doc.early_payment && doc.early_payment_commission && !doc.early_paid",
+   "fieldname": "make_early_payment",
+   "fieldtype": "Button",
+   "label": "Make Early Payment"
+  },
+  {
+   "default": "0",
+   "depends_on": "eval:doc.early_payment",
+   "fieldname": "early_paid",
+   "fieldtype": "Check",
+   "label": "Early Paid",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fieldname": "administrative_expenses",
+   "fieldtype": "Section Break",
+   "label": "Administrative Expenses"
+  },
+  {
+   "fieldname": "administrative_expenses_depends_on",
+   "fieldtype": "Select",
+   "label": "Administrative Expenses Depends On",
+   "options": "\nAmount\nPercent",
+   "reqd": 1
+  },
+  {
+   "depends_on": "eval:doc.administrative_expenses_depends_on == \"Percent\"",
+   "fieldname": "percentage",
+   "fieldtype": "Percent",
+   "label": "Percentage (%)",
+   "mandatory_depends_on": "eval:doc.administrative_expenses_depends_on == \"Percent\""
+  },
+  {
+   "fieldname": "column_break_33",
+   "fieldtype": "Column Break"
+  },
+  {
+   "depends_on": "eval:doc.administrative_expenses_depends_on",
+   "fieldname": "administrative_expenses_amount",
+   "fieldtype": "Currency",
+   "label": "Administrative Expenses Amount",
+   "mandatory_depends_on": "eval:doc.administrative_expenses_depends_on == \"Amount\"",
+   "options": "Company:company:default_currency",
+   "read_only_depends_on": "eval:doc.administrative_expenses_depends_on == \"Percent\""
+  },
+  {
+   "default": "0",
+   "fieldname": "included_in_loan_amount",
+   "fieldtype": "Check",
+   "label": "Included In Loan Amount"
+  },
+  {
+   "fieldname": "administrative_expenses_account",
+   "fieldtype": "Link",
+   "label": "Administrative Expenses Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "section_break_62",
+   "fieldtype": "Section Break",
+   "label": "Payable Account Details"
+  },
+  {
+   "fetch_from": "loan_type.payable_interest_account",
+   "fieldname": "payable_interest_account",
+   "fieldtype": "Link",
+   "label": "Payable Interest Account",
+   "options": "Account",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "loan_type.loan_account_2",
+   "fieldname": "loan_account_2",
+   "fieldtype": "Link",
+   "label": "Loan Account",
+   "options": "Account",
+   "read_only": 1
+  },
+  {
+   "fieldname": "receipt_account",
+   "fieldtype": "Link",
+   "label": "Receipt Account",
+   "options": "Account",
+   "reqd": 1
+  },
+  {
+   "fieldname": "column_break_65",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fetch_from": "loan_type.interest_expense_account",
+   "fieldname": "interest_expense_account",
+   "fieldtype": "Link",
+   "label": "Interest Expense Account",
+   "options": "Account",
+   "read_only": 1
+  },
+  {
+   "fetch_from": "loan_type.penalty_expense_account",
+   "fieldname": "penalty_expense_account",
+   "fieldtype": "Link",
+   "label": "Penalty Expense Account",
+   "options": "Account",
+   "read_only": 1
+  },
+  {
+   "fieldname": "no_of_repayments",
+   "fieldtype": "Int",
+   "label": "No. Of Repayments",
+   "reqd": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "is_submittable": 1,
+ "links": [],
+ "modified": "2021-08-29 20:08:03.383932",
+ "modified_by": "Administrator",
+ "module": "ECS Bank Loans",
+ "name": "Bank Loan",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "amend": 1,
+   "cancel": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "Loan Manager",
+   "share": 1,
+   "submit": 1,
+   "write": 1
+  },
+  {
+   "read": 1,
+   "role": "Employee"
+  }
+ ],
+ "search_fields": "posting_date",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "title_field": "applicant",
+ "track_changes": 1
+}
