@@ -23,6 +23,7 @@
   "loan_type",
   "loan_amount",
   "net_loan_amount",
+  "rate_of_interest",
   "interest_amount",
   "disbursement_date",
   "disbursed_amount",
@@ -33,6 +34,7 @@
   "repayment_start_date",
   "payment_frequency",
   "repayment_every",
+  "calculate_repayment_schedule_automatically",
   "administrative_expenses",
   "administrative_expenses_depends_on",
   "percentage",
@@ -469,12 +471,23 @@
    "fieldtype": "Int",
    "label": "No. Of Repayments",
    "reqd": 1
+  },
+  {
+   "fieldname": "rate_of_interest",
+   "fieldtype": "Percent",
+   "label": "Rate Of Interest (%)"
+  },
+  {
+   "default": "0",
+   "fieldname": "calculate_repayment_schedule_automatically",
+   "fieldtype": "Check",
+   "label": "Calculate Repayment Schedule Automatically"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-08-29 20:08:03.383932",
+ "modified": "2021-09-04 23:11:53.912216",
  "modified_by": "Administrator",
  "module": "ECS Bank Loans",
  "name": "Bank Loan",

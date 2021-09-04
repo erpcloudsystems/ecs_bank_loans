@@ -46,7 +46,7 @@ class BankLoan(Document):
 		if not self.repayment_start_date:
 			frappe.throw(_("Repayment Start Date is mandatory"))
 
-		if self.repayment_type == "Fixed":
+		if self.calculate_repayment_schedule_automatically:
 			self.repayment_schedule = []
 			payment_date = self.repayment_start_date
 			balance_amount = self.net_loan_amount
