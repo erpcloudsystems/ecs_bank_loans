@@ -249,7 +249,6 @@
   },
   {
    "depends_on": "eval:doc.bank_account",
-   "fetch_from": "bank_account.account",
    "fieldname": "current_account",
    "fieldtype": "Link",
    "label": "Current Account",
@@ -258,20 +257,18 @@
   },
   {
    "depends_on": "eval:doc.bank_account",
-   "fetch_from": "bank_account.collection_fee_account",
    "fieldname": "receivable_account",
    "fieldtype": "Link",
    "label": "Receivable Account",
-   "options": "Bank Account",
+   "options": "Account",
    "read_only": 1
   },
   {
    "depends_on": "eval:doc.bank_account",
-   "fetch_from": "bank_account.payable_account",
    "fieldname": "payable_account",
    "fieldtype": "Link",
    "label": "Payable Account",
-   "options": "Bank Account",
+   "options": "Account",
    "read_only": 1
   },
   {
@@ -487,7 +484,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-09-04 23:11:53.912216",
+ "modified": "2021-09-05 02:31:07.781635",
  "modified_by": "Administrator",
  "module": "ECS Bank Loans",
  "name": "Bank Loan",
