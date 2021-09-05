@@ -282,7 +282,9 @@
    "fieldname": "interest_amount",
    "fieldtype": "Currency",
    "label": "Interest Amount",
+   "mandatory_depends_on": "eval:!doc.calculate_repayment_schedule_automatically",
    "options": "Company:company:default_currency",
+   "read_only_depends_on": "eval:doc.calculate_repayment_schedule_automatically",
    "reqd": 1
   },
   {
@@ -484,7 +486,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-09-05 02:59:38.987074",
+ "modified": "2021-09-05 12:33:14.007528",
  "modified_by": "Administrator",
  "module": "ECS Bank Loans",
  "name": "Bank Loan",
