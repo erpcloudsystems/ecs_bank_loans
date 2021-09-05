@@ -20,6 +20,7 @@
   "posting_date",
   "status",
   "section_break_8",
+  "calculate_repayment_schedule_automatically",
   "loan_type",
   "loan_amount",
   "net_loan_amount",
@@ -34,7 +35,6 @@
   "repayment_start_date",
   "payment_frequency",
   "repayment_every",
-  "calculate_repayment_schedule_automatically",
   "administrative_expenses",
   "administrative_expenses_depends_on",
   "percentage",
@@ -286,12 +286,12 @@
    "reqd": 1
   },
   {
-   "depends_on": "eval:doc.repayment_type == \"Fixed\"",
    "fieldname": "repayment_amount",
    "fieldtype": "Currency",
    "label": "Repayment Amount",
-   "mandatory_depends_on": "eval:doc.repayment_type == \"Fixed\"",
-   "options": "Company:company:default_currency"
+   "mandatory_depends_on": "eval:!doc.calculate_repayment_schedule_automatically",
+   "options": "Company:company:default_currency",
+   "read_only_depends_on": "eval:doc.calculate_repayment_schedule_automatically"
   },
   {
    "fieldname": "payment_frequency",
@@ -484,7 +484,7 @@
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
  "links": [],
- "modified": "2021-09-05 02:31:07.781635",
+ "modified": "2021-09-05 02:59:38.987074",
  "modified_by": "Administrator",
  "module": "ECS Bank Loans",
  "name": "Bank Loan",
