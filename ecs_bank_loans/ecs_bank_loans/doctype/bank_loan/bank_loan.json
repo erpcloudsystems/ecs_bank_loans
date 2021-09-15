@@ -18,6 +18,8 @@
   "posting_date",
   "status",
   "section_break_8",
+  "calculate_repayment_schedule_automatically",
+  "calculate_rate_of_interest",
   "loan_type",
   "loan_amount",
   "net_loan_amount",
@@ -32,7 +34,6 @@
   "repayment_start_date",
   "payment_frequency",
   "repayment_every",
-  "calculate_repayment_schedule_automatically",
   "administrative_expenses",
   "administrative_expenses_depends_on",
   "percentage",
@@ -104,7 +105,7 @@
    "fieldname": "receivable_account",
    "fieldtype": "Link",
    "label": "Receivable Account",
-   "options": "Bank Account",
+   "options": "Account",
    "read_only": 1
   },
   {
@@ -113,7 +114,7 @@
    "fieldname": "payable_account",
    "fieldtype": "Link",
    "label": "Payable Account",
-   "options": "Bank Account",
+   "options": "Account",
    "read_only": 1
   },
   {
@@ -195,7 +196,7 @@
    "fieldtype": "Currency",
    "label": "Interest Amount",
    "options": "Company:company:default_currency",
-   "reqd": 1
+   "read_only": 1
   },
   {
    "depends_on": "eval:doc.status==\"Disbursed\"",
@@ -205,6 +206,7 @@
    "no_copy": 1
   },
   {
+   "allow_on_submit": 1,
    "fieldname": "disbursed_amount",
    "fieldtype": "Currency",
    "label": "Disbursed Amount",
@@ -225,16 +227,14 @@
   {
    "fieldname": "repayment_type",
    "fieldtype": "Select",
+   "hidden": 1,
    "label": "Repayment Type",
-   "options": "\nFixed\nDecreasing",
-   "reqd": 1
+   "options": "\nFixed\nDecreasing"
   },
   {
-   "depends_on": "eval:doc.repayment_type == \"Fixed\"",
    "fieldname": "repayment_amount",
    "fieldtype": "Currency",
    "label": "Repayment Amount",
-   "mandatory_depends_on": "eval:doc.repayment_type == \"Fixed\"",
    "options": "Company:company:default_currency"
   },
   {
@@ -445,6 +445,7 @@
    "fieldtype": "Column Break"
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "total_principal_paid",
    "fieldtype": "Currency",
@@ -454,6 +455,7 @@
    "read_only": 1
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "fieldname": "total_interest_paid",
    "fieldtype": "Currency",
@@ -489,12 +491,23 @@
    "options": "Bank Loan",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "default": "0",
+   "fieldname": "calculate_rate_of_interest",
+   "fieldtype": "Check",
+   "label": "Calculate Rate Of Interest"
   }
  ],
  "index_web_pages_for_search": 1,
  "is_submittable": 1,
- "links": [],
- "modified": "2021-09-15 12:10:55.586328",
+ "links": [
+  {
+   "link_doctype": "Journal Entry",
+   "link_fieldname": "reference_link"
+  }
+ ],
+ "modified": "2021-09-15 15:09:54.557265",
  "modified_by": "Administrator",
  "module": "ECS Bank Loans",
  "name": "Bank Loan",

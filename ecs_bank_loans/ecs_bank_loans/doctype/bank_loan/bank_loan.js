@@ -131,7 +131,7 @@ frappe.ui.form.on("Bank Loan Repayment Schedule", "make_payment", function(frm,c
     let accounts = [
                 {
                     "doctype": "Journal Entry Account",
-                    "account": frm.doc.loan_account,
+                    "account": frm.doc.loan_account_2,
                     "debit": d.total_payment,
                     "credit": 0,
                     "debit_in_account_currency": d.total_payment,
@@ -203,7 +203,11 @@ function submit_je(frm) {
 frappe.ui.form.on("Bank Loan", "early_payment_commission", function() {
     cur_frm.save('Update');
 });
-
+frappe.ui.form.on("Bank Loan", "calculate_rate_of_interest", function(frm,cdt,cdn) {
+   // cur_frm.save('Update');
+   cur_frm.set_value("rate_of_interest", "");
+   cur_frm.refresh_field("rate_of_interest");
+});
 frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
 {
                 frappe.db.insert(populate_je_obj_4(frm))
@@ -220,7 +224,7 @@ frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
     let accounts = [
                 {
                     "doctype": "Journal Entry Account",
-                    "account": frm.doc.loan_account,
+                    "account": frm.doc.loan_account_2,
                     "debit": cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid,
                     "credit": 0,
                     "debit_in_account_currency": cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid,

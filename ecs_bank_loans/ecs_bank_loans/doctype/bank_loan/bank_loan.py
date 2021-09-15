@@ -40,9 +40,13 @@ class BankLoan(Document):
             frappe.throw(_(" برجاء تحديد حساب برسم الدفع داخل الحساب البنكي وإعادة إختيار الحساب البنكي مرة أخرى "))
 
     def calculate_repayment_and_interest_amount(self):
-        if self.calculate_repayment_schedule_automatically:
+        if self.calculate_repayment_schedule_automatically and not self.calculate_rate_of_interest:
             import numpy as np
             self.repayment_amount = -1 * np.pmt(0.01 * self.rate_of_interest / (360 / self.repayment_every), self.no_of_repayments, self.loan_amount)
+            self.interest_amount = 0.01 * self.loan_amount * self.rate_of_interest / (360 / self.repayment_every)
+        if self.calculate_repayment_schedule_automatically and self.calculate_rate_of_interest:
+            import numpy as np
+            self.rate_of_interest = np.rate(self.no_of_repayments,(-1*self.repayment_amount),self.loan_amount,12)*12*100
             self.interest_amount = 0.01 * self.loan_amount * self.rate_of_interest / (360 / self.repayment_every)
 
     def calculate_repayment_schedule(self):
@@ -95,7 +99,7 @@ class BankLoan(Document):
                     "doctype": "Journal Entry Account",
                     "account": self.current_account,
                     "credit": 0,
-                    "debit": self.loan_amount,
+                    "debit": self.net_loan_amount,
                     "debit_in_account_currency": self.loan_amount,
                     "user_remark": self.name
                 },
@@ -117,7 +121,7 @@ class BankLoan(Document):
                 },
                 {
                     "doctype": "Journal Entry Account",
-                    "account": self.loan_account,
+                    "account": self.loan_account_2,
                     "credit": self.total_payment,
                     "debit": 0,
                     "credit_in_account_currency": self.total_payment,
@@ -154,7 +158,7 @@ class BankLoan(Document):
             accounts = [
                 {
                     "doctype": "Journal Entry Account",
-                    "account": self.receipt_account,
+                    "account": self.current_account,
                     "credit": 0,
                     "debit": self.total_principal_payable,
                     "debit_in_account_currency": self.total_principal_payable,
@@ -170,7 +174,7 @@ class BankLoan(Document):
                 },
                 {
                     "doctype": "Journal Entry Account",
-                    "account": self.loan_account,
+                    "account": self.loan_account_2,
                     "credit": self.total_payment,
                     "debit": 0,
                     "credit_in_account_currency": self.total_payment,
@@ -214,4 +218,24 @@ def make_paid(doc, method=None):
         frappe.set_value('Bank Loan', row.parent, 'total_principal_paid',new_prnc)
         frappe.set_value('Bank Loan', row.parent, 'total_interest_paid', new_inter)
         frappe.set_value('Bank Loan', row.parent, 'total_amount_paid', new_tot)
+
+def journal_cancel(doc, method=None):
+    if doc.reference_doctype == "Bank Loan" and doc.bill_no:
+        frappe.set_value('Bank Loan Repayment Schedule', doc.bill_no, 'is_paid', '0')
+        frappe.set_value('Bank Loan Repayment Schedule', doc.bill_no, 'journal_entry', "")
+        row = frappe.get_doc('Bank Loan Repayment Schedule', doc.bill_no)
+        parent = frappe.get_doc('Bank Loan', row.parent)
+        cur_prnc = parent.total_principal_paid
+        row_prnc = row.principal_amount
+        new_prnc = cur_prnc - row_prnc
+        cur_inter = parent.total_interest_paid
+        row_inter = row.interest_amount
+        new_inter = cur_inter - row_inter
+        cur_tot = parent.total_amount_paid
+        row_tot = row.total_payment
+        new_tot = cur_tot - row_tot
+        frappe.set_value('Bank Loan', row.parent, 'total_principal_paid', new_prnc)
+        frappe.set_value('Bank Loan', row.parent, 'total_interest_paid', new_inter)
+        frappe.set_value('Bank Loan', row.parent, 'total_amount_paid', new_tot)
+
 

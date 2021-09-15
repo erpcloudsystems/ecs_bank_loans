@@ -13,7 +13,8 @@ app_license = "MIT"
 # ------------------
 doc_events = {
 	"Journal Entry": {
-		"on_submit": "ecs_bank_loans.ecs_bank_loans.doctype.bank_loan.bank_loan.make_paid"
+		"on_submit": "ecs_bank_loans.ecs_bank_loans.doctype.bank_loan.bank_loan.make_paid",
+		"on_cancel": "ecs_bank_loans.ecs_bank_loans.doctype.bank_loan.bank_loan.journal_cancel"
 	}
 }
 # include js, css files in header of desk.html
