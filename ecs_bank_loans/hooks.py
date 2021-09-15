@@ -11,7 +11,11 @@ app_license = "MIT"
 
 # Includes in <head>
 # ------------------
-
+doc_events = {
+	"Journal Entry": {
+		"on_submit": "ecs_bank_loans.ecs_bank_loans.doctype.bank_loan.bank_loan.make_paid"
+	}
+}
 # include js, css files in header of desk.html
 # app_include_css = "/assets/ecs_bank_loans/css/ecs_bank_loans.css"
 # app_include_js = "/assets/ecs_bank_loans/js/ecs_bank_loans.js"

@@ -19,6 +19,30 @@ frappe.ui.form.on("Bank Loan", {
 	}
 });
 
+frappe.ui.form.on("Bank Loan", {
+	setup: function(frm) {
+		frm.set_query("loan_application", function() {
+			return {
+				filters: [
+					["Loan Application","docstatus", "=", 1]
+				]
+			};
+		});
+	}
+});
+
+frappe.ui.form.on("Bank Loan", {
+	setup: function(frm) {
+		frm.set_query("loan_type", function() {
+			return {
+				filters: [
+					["Loan Type","docstatus", "=", 1]
+				]
+			};
+		});
+	}
+});
+
 frappe.ui.form.on("Bank Loan","applicant", function(frm){
     cur_frm.set_value("bank_account","");
     cur_frm.set_value("current_account","");
@@ -70,4 +94,200 @@ frappe.ui.form.on("Bank Loan", "validate", function(frm) {
 //    }
 //});
 
+frappe.ui.form.on("Bank Loan Repayment Schedule", "make_payment", function(frm,cdt,cdn) {
+    var d = locals[cdt][cdn];
+    if (cur_frm.doc.status != "Disbursed"){
+        frappe.throw("You Must Receive The Loan From The Bank Before Making Payment");
+    }
+});
+
+frappe.ui.form.on("Bank Loan Repayment Schedule", "make_payment", function(frm,cdt,cdn) {
+    var d = locals[cdt][cdn];
+    if (cur_frm.doc.total_amount_paid >= cur_frm.doc.total_payment){
+        frappe.throw("Loan Has Been Fully Paid");
+    }
+});
+
+frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
+    if (cur_frm.doc.total_amount_paid >= cur_frm.doc.total_payment){
+        frappe.throw("Loan Has Been Fully Paid");
+    }
+});
+
+
+frappe.ui.form.on("Bank Loan Repayment Schedule", "make_payment", function(frm,cdt,cdn) {
+{
+                frappe.db.insert(populate_je_obj_3(frm))
+                    .then(function (doc) {
+                        console.log(`${doc.doctype} ${doc.name} created on ${doc.creation}`);
+                        frappe.set_route('Form', doc.doctype, doc.name);
+
+                        }
+                );
+}
+    function populate_je_obj_3(frm, data) {
+	var d = locals[cdt][cdn];
+    let je = {};
+    let accounts = [
+                {
+                    "doctype": "Journal Entry Account",
+                    "account": frm.doc.loan_account,
+                    "debit": d.total_payment,
+                    "credit": 0,
+                    "debit_in_account_currency": d.total_payment,
+                    "user_remark": cur_frm.docname,
+                    "loan_name": cur_frm.docname
+                },
+                {
+                    "doctype": "Journal Entry Account",
+                    "account": frm.doc.interest_expense_account,
+                    "debit": d.interest_amount,
+                    "credit": 0,
+                    "debit_in_account_currency": d.interest_amount,
+                    "user_remark": cur_frm.docname,
+                    "loan_name": cur_frm.docname
+                },
+                {
+                    "doctype": "Journal Entry Account",
+                    "account": frm.doc.current_account,
+                    "debit": 0,
+                    "credit": d.total_payment,
+                    "credit_in_account_currency": d.total_payment,
+                    "user_remark": cur_frm.docname,
+                    "loan_name": cur_frm.docname
+                },
+                {
+                    "doctype": "Journal Entry Account",
+                    "account": frm.doc.payable_interest_account,
+                    "debit": 0,
+                    "credit": d.interest_amount,
+                    "credit_in_account_currency": d.interest_amount,
+                    "user_remark": cur_frm.docname,
+                    "loan_name": cur_frm.docname
+                },
+
+            ];
+
+    je["doctype"] = "Journal Entry";
+    je["voucher_type"] = "Bank Entry";
+    je["reference_doctype"] = "Bank Loan";
+    je["reference_link"] = cur_frm.doc.name;
+    je["cheque_no"] = cur_frm.doc.name;
+    je["bill_no"] = d.name;
+
+    je["cheque_date"] = d.payment_date;
+    je["posting_date"] = d.payment_date;
+
+    je["accounts"] = accounts;
+    return je;
+
+}
+
+function submit_je(frm) {
+    ccco_params.je["remark"] = cur_frm.docname;
+    frappe.db.insert(ccco_params.je)
+        .then(function (doc) {
+            frappe.call({
+                "method": "frappe.client.submit",
+                "args": {
+                    "doc": doc
+                },
+                "callback": (r) => {
+                    console.log(r);
+                }
+            });
+        });
+}
+});
+
+frappe.ui.form.on("Bank Loan", "early_payment_commission", function() {
+    cur_frm.save('Update');
+});
+
+frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
+{
+                frappe.db.insert(populate_je_obj_4(frm))
+                    .then(function (doc) {
+                        console.log(`${doc.doctype} ${doc.name} created on ${doc.creation}`);
+                        frappe.set_route('Form', doc.doctype, doc.name);
+
+                        }
+                );
+}
+    function populate_je_obj_4(frm, data) {
+	var d = locals[cdt][cdn];
+    let je = {};
+    let accounts = [
+                {
+                    "doctype": "Journal Entry Account",
+                    "account": frm.doc.loan_account,
+                    "debit": cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid,
+                    "credit": 0,
+                    "debit_in_account_currency": cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid,
+                    "user_remark": cur_frm.docname,
+                    "loan_name": cur_frm.docname
+                },
+                {
+                    "doctype": "Journal Entry Account",
+                    "account": frm.doc.interest_expense_account,
+                    "debit": cur_frm.doc.early_payment_commission,
+                    "credit": 0,
+                    "debit_in_account_currency": cur_frm.doc.early_payment_commission,
+                    "user_remark": cur_frm.docname,
+                    "loan_name": cur_frm.docname
+                },
+                {
+                    "doctype": "Journal Entry Account",
+                    "account": frm.doc.receipt_account,
+                    "debit": 0,
+                    "credit": (cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid) + cur_frm.doc.early_payment_commission - (cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid),
+                    "credit_in_account_currency": (cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid) + cur_frm.doc.early_payment_commission - (cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid),
+                    "user_remark": cur_frm.docname,
+                    "loan_name": cur_frm.docname
+                },
+                {
+                    "doctype": "Journal Entry Account",
+                    "account": frm.doc.payable_interest_account,
+                    "debit": 0,
+                    "credit": cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid,
+                    "credit_in_account_currency": cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid,
+                    "user_remark": cur_frm.docname,
+                    "loan_name": cur_frm.docname
+                },
+
+            ];
+
+    je["doctype"] = "Journal Entry";
+    je["voucher_type"] = "Bank Entry";
+    je["against_loan"] = cur_frm.doc.name;
+    je["net_loan_amount"] = cur_frm.doc.net_loan_amount;
+    je["cheque_date"] = frappe.datetime.add_days(frm.doc.process_date, 0),
+    je["posting_date"] = frappe.datetime.add_days(frm.doc.process_date, 0),
+    je["accounts"] = accounts;
+    je["total_amount_paid"] = cur_frm.doc.total_amount_paid;
+    je["total_interest_paid"] = cur_frm.doc.total_interest_paid;
+    je["interest_paid"] = cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid;
+    je["total_principal_paid"] = cur_frm.doc.total_principal_paid;
+    je["principal_paid"] = cur_frm.doc.total_principal_payable - cur_frm.doc.total_principal_paid;
+    je["early_payment"] = 1;
+    return je;
+
+}
+
+function submit_je(frm) {
+    ccco_params.je["remark"] = cur_frm.docname;
+    frappe.db.insert(ccco_params.je)
+        .then(function (doc) {
+            frappe.call({
+                "method": "frappe.client.submit",
+                "args": {
+                    "doc": doc
+                },
+                "callback": (r) => {
+                    console.log(r);
+                }
+            });
+        });
+}
+});
 
