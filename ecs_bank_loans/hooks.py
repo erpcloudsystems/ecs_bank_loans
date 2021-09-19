@@ -17,6 +17,14 @@ doc_events = {
 		"on_cancel": "ecs_bank_loans.ecs_bank_loans.doctype.bank_loan.bank_loan.journal_cancel"
 	}
 }
+scheduler_events = {
+
+"daily": [
+	"ecs_bank_loans.ecs_bank_loans.doctype.bank_loan.bank_loan.set_accured"
+]
+
+}
+
 # include js, css files in header of desk.html
 # app_include_css = "/assets/ecs_bank_loans/css/ecs_bank_loans.css"
 # app_include_js = "/assets/ecs_bank_loans/js/ecs_bank_loans.js"

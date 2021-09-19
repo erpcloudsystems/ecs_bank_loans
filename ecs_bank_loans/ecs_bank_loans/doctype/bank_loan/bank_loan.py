@@ -239,5 +239,6 @@ def journal_cancel(doc, method=None):
         frappe.set_value('Bank Loan', row.parent, 'total_amount_paid', new_tot)
 
 def set_accured():
-    frappe.db.sql("""update `tabBank Loan Repayment Schedule` set is_accrued = '1' where payment_date > date(CURRENT_DATE() - 5)""")
+    frappe.db.sql("""update `tabBank Loan Repayment Schedule` set is_accrued = '1' where payment_date >= date(CURRENT_DATE() + 5) and payment_date < date(CURRENT_DATE() +10) """)
+    frappe.db.sql("""update `tabBank Loan Repayment Schedule` set is_accrued = '1' where payment_date < CURRENT_DATE()""")
 
