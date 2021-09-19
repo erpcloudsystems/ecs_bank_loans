@@ -221,6 +221,7 @@ def make_paid(doc, method=None):
 
 def journal_cancel(doc, method=None):
     if doc.reference_doctype == "Bank Loan" and doc.bill_no:
+        frappe.db.sql("""update `tabJournal Entry` set reference_link ='' where bill_no='{bill_no}'""".format(bill_no=bill_no))
         frappe.set_value('Bank Loan Repayment Schedule', doc.bill_no, 'is_paid', '0')
         frappe.set_value('Bank Loan Repayment Schedule', doc.bill_no, 'journal_entry', "")
         row = frappe.get_doc('Bank Loan Repayment Schedule', doc.bill_no)
