@@ -18,7 +18,7 @@
  ],
  "fields": [
   {
-   "columns": 2,
+   "columns": 1,
    "fieldname": "payment_date",
    "fieldtype": "Date",
    "in_list_view": 1,
@@ -83,7 +83,7 @@
    "read_only": 1
   },
   {
-   "columns": 1,
+   "columns": 2,
    "fieldname": "balance_loan_amount",
    "fieldtype": "Currency",
    "in_list_view": 1,
@@ -95,13 +95,13 @@
    "default": "0",
    "fieldname": "is_accrued",
    "fieldtype": "Check",
-   "label": "is_accrued",
+   "label": "Is Accrued",
    "read_only": 1
   }
  ],
  "istable": 1,
  "links": [],
- "modified": "2021-09-18 12:25:25.827288",
+ "modified": "2021-10-28 15:30:56.269323",
  "modified_by": "Administrator",
  "module": "ECS Bank Loans",
  "name": "Bank Loan Repayment Schedule",

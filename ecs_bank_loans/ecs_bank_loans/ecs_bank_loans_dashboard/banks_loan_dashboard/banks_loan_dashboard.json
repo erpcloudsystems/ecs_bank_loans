@@ -1,0 +1,25 @@
+{
+ "cards": [
+  {
+   "card": "Total Active Loans"
+  }
+ ],
+ "charts": [
+  {
+   "chart": "Banks Loans Chart",
+   "width": "Half"
+  }
+ ],
+ "creation": "2021-09-19 06:00:12.322691",
+ "dashboard_name": "Banks Loan Dashboard",
+ "docstatus": 0,
+ "doctype": "Dashboard",
+ "idx": 0,
+ "is_default": 1,
+ "is_standard": 1,
+ "modified": "2021-09-19 06:04:11.179257",
+ "modified_by": "Administrator",
+ "module": "ECS Bank Loans",
+ "name": "Banks Loan Dashboard",
+ "owner": "Administrator"
+}
