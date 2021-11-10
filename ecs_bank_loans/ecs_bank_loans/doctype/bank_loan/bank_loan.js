@@ -174,10 +174,8 @@ frappe.ui.form.on("Bank Loan Repayment Schedule", "make_payment", function(frm,c
     je["reference_link"] = cur_frm.doc.name;
     je["cheque_no"] = cur_frm.doc.name;
     je["bill_no"] = d.name;
-
     je["cheque_date"] = d.payment_date;
     je["posting_date"] = d.payment_date;
-
     je["accounts"] = accounts;
     return je;
 
@@ -208,6 +206,7 @@ frappe.ui.form.on("Bank Loan", "calculate_rate_of_interest", function(frm,cdt,cd
    cur_frm.set_value("rate_of_interest", "");
    cur_frm.refresh_field("rate_of_interest");
 });
+
 frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
 {
                 frappe.db.insert(populate_je_obj_4(frm))
@@ -219,7 +218,6 @@ frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
                 );
 }
     function populate_je_obj_4(frm, data) {
-	var d = locals[cdt][cdn];
     let je = {};
     let accounts = [
                 {
@@ -240,7 +238,7 @@ frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
                 },
                 {
                     "doctype": "Journal Entry Account",
-                    "account": cur_frm.doc.receipt_account,
+                    "account": cur_frm.doc.current_account,
                     "debit": 0,
                     "credit": (cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid) + cur_frm.doc.early_payment_commission - (cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid),
                     "credit_in_account_currency": (cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid) + cur_frm.doc.early_payment_commission - (cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid),
@@ -261,6 +259,7 @@ frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
     je["voucher_type"] = "Bank Entry";
     je["reference_doctype"] = "Bank Loan";
     je["reference_link"] = cur_frm.doc.name;
+    je["cheque_no"] = cur_frm.doc.name;
     je["cheque_date"] = frappe.datetime.add_days(frm.doc.process_date, 0),
     je["posting_date"] = frappe.datetime.add_days(frm.doc.process_date, 0),
     je["accounts"] = accounts;

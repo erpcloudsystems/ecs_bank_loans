@@ -46,7 +46,6 @@
   "section_break_62",
   "payable_interest_account",
   "loan_account_2",
-  "receipt_account",
   "column_break_65",
   "interest_expense_account",
   "penalty_expense_account",
@@ -334,13 +333,6 @@
    "read_only": 1
   },
   {
-   "fieldname": "receipt_account",
-   "fieldtype": "Link",
-   "hidden": 1,
-   "label": "Receipt Account",
-   "options": "Account"
-  },
-  {
    "fieldname": "column_break_65",
    "fieldtype": "Column Break"
   },
@@ -524,7 +516,7 @@
    "link_fieldname": "reference_link"
   }
  ],
- "modified": "2021-11-10 15:52:54.153822",
+ "modified": "2021-11-10 17:18:48.907804",
  "modified_by": "Administrator",
  "module": "ECS Bank Loans",
  "name": "Bank Loan",
