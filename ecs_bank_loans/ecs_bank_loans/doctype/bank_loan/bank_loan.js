@@ -224,62 +224,52 @@ frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
     let accounts = [
                 {
                     "doctype": "Journal Entry Account",
-                    "account": frm.doc.loan_account_2,
+                    "account": cur_frm.doc.loan_account_2,
                     "debit": cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid,
                     "credit": 0,
                     "debit_in_account_currency": cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid,
-                    "user_remark": cur_frm.docname,
-                    "loan_name": cur_frm.docname
+                    "user_remark": cur_frm.doc.name
                 },
                 {
                     "doctype": "Journal Entry Account",
-                    "account": frm.doc.interest_expense_account,
+                    "account": cur_frm.doc.interest_expense_account,
                     "debit": cur_frm.doc.early_payment_commission,
                     "credit": 0,
                     "debit_in_account_currency": cur_frm.doc.early_payment_commission,
-                    "user_remark": cur_frm.docname,
-                    "loan_name": cur_frm.docname
+                    "user_remark": cur_frm.doc.name
                 },
                 {
                     "doctype": "Journal Entry Account",
-                    "account": frm.doc.receipt_account,
+                    "account": cur_frm.doc.receipt_account,
                     "debit": 0,
                     "credit": (cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid) + cur_frm.doc.early_payment_commission - (cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid),
                     "credit_in_account_currency": (cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid) + cur_frm.doc.early_payment_commission - (cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid),
-                    "user_remark": cur_frm.docname,
-                    "loan_name": cur_frm.docname
+                    "user_remark": cur_frm.doc.name
                 },
                 {
                     "doctype": "Journal Entry Account",
-                    "account": frm.doc.payable_interest_account,
+                    "account": cur_frm.doc.payable_interest_account,
                     "debit": 0,
                     "credit": cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid,
                     "credit_in_account_currency": cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid,
-                    "user_remark": cur_frm.docname,
-                    "loan_name": cur_frm.docname
+                    "user_remark": cur_frm.doc.name
                 },
 
             ];
 
     je["doctype"] = "Journal Entry";
     je["voucher_type"] = "Bank Entry";
-    je["against_loan"] = cur_frm.doc.name;
-    je["net_loan_amount"] = cur_frm.doc.net_loan_amount;
+    je["reference_doctype"] = "Bank Loan";
+    je["reference_link"] = cur_frm.doc.name;
     je["cheque_date"] = frappe.datetime.add_days(frm.doc.process_date, 0),
     je["posting_date"] = frappe.datetime.add_days(frm.doc.process_date, 0),
     je["accounts"] = accounts;
-    je["total_amount_paid"] = cur_frm.doc.total_amount_paid;
-    je["total_interest_paid"] = cur_frm.doc.total_interest_paid;
-    je["interest_paid"] = cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid;
-    je["total_principal_paid"] = cur_frm.doc.total_principal_paid;
-    je["principal_paid"] = cur_frm.doc.total_principal_payable - cur_frm.doc.total_principal_paid;
-    je["early_payment"] = 1;
     return je;
 
 }
 
 function submit_je(frm) {
-    ccco_params.je["remark"] = cur_frm.docname;
+    ccco_params.je["remark"] = cur_frm.doc.name;
     frappe.db.insert(ccco_params.je)
         .then(function (doc) {
             frappe.call({
