@@ -60,10 +60,12 @@ class BankLoan(Document):
             principal_amount = self.repayment_amount - interest_amount
             while (a > 0):
                 balance_amount = flt(balance_amount + interest_amount - self.repayment_amount)
-                if balance_amount < 0:
+                if balance_loan_amount < 0:
+                    total_payment = principal_amount + interest_amount
                     principal_amount += balance_amount
-                    balance_amount = 0.0
-                total_payment = principal_amount + interest_amount
+                    balance_loan_amount = 0.0
+                    interest_amount = total_payment - principal_amount
+
                 self.append("repayment_schedule", {
                     "payment_date": payment_date,
                     "principal_amount": principal_amount,
