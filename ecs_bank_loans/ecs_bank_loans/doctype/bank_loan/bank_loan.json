@@ -21,9 +21,11 @@
   "calculate_repayment_schedule_automatically",
   "calculate_rate_of_interest",
   "loan_type",
+  "loan_early_payment_commission",
   "loan_amount",
   "net_loan_amount",
   "rate_of_interest",
+  "fixed_interest",
   "interest_amount",
   "disbursement_date",
   "disbursed_amount",
@@ -497,6 +499,21 @@
    "fieldname": "calculate_rate_of_interest",
    "fieldtype": "Check",
    "label": "Calculate Rate Of Interest"
+  },
+  {
+   "fieldname": "fixed_interest",
+   "fieldtype": "Percent",
+   "label": "Fixed Interest (%)",
+   "no_copy": 1,
+   "read_only": 1
+  },
+  {
+   "fetch_from": "loan_type.early_payment_commission",
+   "fieldname": "loan_early_payment_commission",
+   "fieldtype": "Currency",
+   "label": "Loan Early Payment Commission ",
+   "no_copy": 1,
+   "read_only": 1
   }
  ],
  "index_web_pages_for_search": 1,
@@ -507,7 +524,7 @@
    "link_fieldname": "reference_link"
   }
  ],
- "modified": "2021-09-15 15:09:54.557265",
+ "modified": "2021-11-10 15:52:54.153822",
  "modified_by": "Administrator",
  "module": "ECS Bank Loans",
  "name": "Bank Loan",

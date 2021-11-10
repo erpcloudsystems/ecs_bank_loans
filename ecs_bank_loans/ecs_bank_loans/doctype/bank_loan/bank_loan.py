@@ -27,6 +27,7 @@ class BankLoan(Document):
         self.calculate_repayment_and_interest_amount()
         self.calculate_repayment_schedule()
         self.calculate_totals()
+        self.calculate_fixed_interest()
 
     @frappe.whitelist()
     def show_warnings(self):
@@ -92,6 +93,9 @@ class BankLoan(Document):
             self.total_payment += data.total_payment
             self.total_interest_payable += data.interest_amount
             self.total_principal_payable += data.principal_amount
+
+    def calculate_fixed_interest(self):
+        self.fixed_interest = 100 * (self.total_interest_payable / (self.no_of_repayments / 12) / self.loan_amount)
 
     def make_journal_entry(self):
         if self.included_in_loan_amount and self.loan_amount != self.net_loan_amount:
@@ -223,7 +227,7 @@ def make_paid(doc, method=None):
 
 def journal_cancel(doc, method=None):
     if doc.reference_doctype == "Bank Loan" and doc.bill_no:
-        frappe.db.sql("""update `tabJournal Entry` set reference_link ='' where bill_no='{bill_no}'""".format(bill_no=bill_no))
+        frappe.db.sql("""update `tabJournal Entry` set reference_link ='' where bill_no='{bill_no}'""".format(bill_no=doc.bill_no))
         frappe.set_value('Bank Loan Repayment Schedule', doc.bill_no, 'is_paid', '0')
         frappe.set_value('Bank Loan Repayment Schedule', doc.bill_no, 'journal_entry', "")
         row = frappe.get_doc('Bank Loan Repayment Schedule', doc.bill_no)
