@@ -134,7 +134,7 @@ frappe.ui.form.on("Bank Loan Repayment Schedule", "make_payment", function(frm,c
                     "account": frm.doc.loan_account_2,
                     "debit": d.total_payment,
                     "credit": 0,
-                    "debit_in_account_currency": d.total_payment,
+                    "debit_in_account_currency": d.principal_amount,
                     "user_remark": cur_frm.docname,
                     "loan_name": cur_frm.docname
                 },
@@ -152,7 +152,7 @@ frappe.ui.form.on("Bank Loan Repayment Schedule", "make_payment", function(frm,c
                     "account": frm.doc.current_account,
                     "debit": 0,
                     "credit": d.total_payment,
-                    "credit_in_account_currency": d.total_payment,
+                    "credit_in_account_currency": d.principal_amount,
                     "user_remark": cur_frm.docname,
                     "loan_name": cur_frm.docname
                 },
