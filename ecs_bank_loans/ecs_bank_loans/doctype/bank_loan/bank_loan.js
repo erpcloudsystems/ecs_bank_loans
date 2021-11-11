@@ -262,6 +262,7 @@ frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
     je["cheque_no"] = cur_frm.doc.name;
     je["cheque_date"] = frappe.datetime.add_days(frm.doc.process_date, 0),
     je["posting_date"] = frappe.datetime.add_days(frm.doc.process_date, 0),
+    je["early_payment"] = 1,
     je["accounts"] = accounts;
     return je;
 

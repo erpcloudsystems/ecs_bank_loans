@@ -225,6 +225,24 @@ def make_paid(doc, method=None):
         frappe.set_value('Bank Loan', row.parent, 'total_interest_paid', new_inter)
         frappe.set_value('Bank Loan', row.parent, 'total_amount_paid', new_tot)
 
+    if doc.reference_doctype == "Bank Loan" and doc.early_payment == 1:
+        frappe.set_value('Bank Loan', doc.reference_link, 'early_paid', '1')
+        bank_loan = frappe.get_doc('Bank Loan',doc.reference_link)
+        cur_prnc = bank_loan.total_principal_paid
+        je_prnc = bank_loan.total_principal_payable - bank_loan.total_principal_paid
+        new_prnc = cur_prnc + je_prnc
+        frappe.set_value('Bank Loan', doc.reference_link, 'total_principal_paid', new_prnc)
+        cur_inter = bank_loan.total_interest_paid
+        je_inter = bank_loan.total_interest_payable - bank_loan.total_interest_paid
+        new_inter = cur_inter + je_inter
+        frappe.set_value('Bank Loan', doc.reference_link, 'total_interest_paid', new_inter)
+        cur_tot = bank_loan.total_amount_paid
+        je_tot = bank_loan.total_payment - bank_loan.total_amount_paid
+        new_tot = cur_tot + je_tot
+        frappe.set_value('Bank Loan', doc.reference_link, 'total_amount_paid', new_tot)
+
+
+
 def journal_cancel(doc, method=None):
     if doc.reference_doctype == "Bank Loan" and doc.bill_no:
         frappe.db.sql("""update `tabJournal Entry` set reference_link ='' where bill_no='{bill_no}'""".format(bill_no=doc.bill_no))
@@ -244,6 +262,7 @@ def journal_cancel(doc, method=None):
         frappe.set_value('Bank Loan', row.parent, 'total_principal_paid', new_prnc)
         frappe.set_value('Bank Loan', row.parent, 'total_interest_paid', new_inter)
         frappe.set_value('Bank Loan', row.parent, 'total_amount_paid', new_tot)
+
 
 def set_accured():
     frappe.db.sql("""update `tabBank Loan Repayment Schedule` set is_accrued = '1' where payment_date >= date(CURRENT_DATE() + 5) and payment_date < date(CURRENT_DATE() +10) """)

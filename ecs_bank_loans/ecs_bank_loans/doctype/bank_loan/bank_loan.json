@@ -360,7 +360,7 @@
   {
    "allow_on_submit": 1,
    "default": "0",
-   "depends_on": "eval:doc.status == \"Disbursed\"",
+   "depends_on": "eval:doc.status == \"Disbursed\" && doc.early_paid == 0",
    "fieldname": "early_payment",
    "fieldtype": "Check",
    "label": "Early Payment",
@@ -385,6 +385,7 @@
    "label": "Make Early Payment"
   },
   {
+   "allow_on_submit": 1,
    "default": "0",
    "depends_on": "eval:doc.early_payment",
    "fieldname": "early_paid",
@@ -516,7 +517,7 @@
    "link_fieldname": "reference_link"
   }
  ],
- "modified": "2021-11-10 17:18:48.907804",
+ "modified": "2021-11-11 15:11:45.001103",
  "modified_by": "Administrator",
  "module": "ECS Bank Loans",
  "name": "Bank Loan",
