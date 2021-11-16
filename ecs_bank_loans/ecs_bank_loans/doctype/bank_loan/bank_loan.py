@@ -265,6 +265,22 @@ def journal_cancel(doc, method=None):
 
     if doc.reference_doctype == "Bank Loan" and doc.early_payment == 1:
         frappe.set_value('Bank Loan', doc.reference_link, 'early_paid', '0')
+        frappe.set_value('Bank Loan', doc.reference_link, 'early_payment', '0')
+        frappe.set_value('Bank Loan', doc.reference_link, 'early_payment_commission', '')
+        bank_loan = frappe.get_doc('Bank Loan',doc.reference_link)
+        cur_prnc = bank_loan.total_principal_paid
+        je_prnc = doc.principal_amount
+        new_prnc = cur_prnc - je_prnc
+        frappe.set_value('Bank Loan', doc.reference_link, 'total_principal_paid', new_prnc)
+        cur_inter = bank_loan.total_interest_paid
+        je_inter = doc.interest_amount
+        new_inter = cur_inter - je_inter
+        frappe.set_value('Bank Loan', doc.reference_link, 'total_interest_paid', new_inter)
+        cur_tot = bank_loan.total_amount_paid
+        je_tot = doc.total_payment
+        new_tot = cur_tot - je_tot
+        frappe.set_value('Bank Loan', doc.reference_link, 'total_amount_paid', new_tot)
+
 
 
 

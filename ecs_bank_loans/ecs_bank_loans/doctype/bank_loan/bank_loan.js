@@ -221,6 +221,7 @@ frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
                 );
 }
     function populate_je_obj_4(frm, data) {
+    var d = locals[cdt][cdn];
     let je = {};
     let accounts = [
                 {
@@ -266,6 +267,9 @@ frappe.ui.form.on("Bank Loan", "make_early_payment", function(frm,cdt,cdn) {
     je["cheque_date"] = frappe.datetime.add_days(frm.doc.process_date, 0),
     je["posting_date"] = frappe.datetime.add_days(frm.doc.process_date, 0),
     je["early_payment"] = 1,
+    je["total_payment"] = cur_frm.doc.total_payment - cur_frm.doc.total_amount_paid;
+    je["interest_amount"] = cur_frm.doc.total_interest_payable - cur_frm.doc.total_interest_paid;
+    je["principal_amount"] = cur_frm.doc.total_principal_payable - cur_frm.doc.total_principal_paid;
     je["accounts"] = accounts;
     return je;
 
