@@ -134,7 +134,7 @@ frappe.ui.form.on("Bank Loan Repayment Schedule", "make_payment", function(frm,c
                     "account": frm.doc.loan_account_2,
                     "debit": d.total_payment,
                     "credit": 0,
-                    "debit_in_account_currency": d.principal_amount,
+                    "debit_in_account_currency": d.total_payment,
                     "user_remark": cur_frm.docname,
                     "loan_name": cur_frm.docname
                 },
@@ -152,7 +152,7 @@ frappe.ui.form.on("Bank Loan Repayment Schedule", "make_payment", function(frm,c
                     "account": frm.doc.current_account,
                     "debit": 0,
                     "credit": d.total_payment,
-                    "credit_in_account_currency": d.principal_amount,
+                    "credit_in_account_currency": d.total_payment,
                     "user_remark": cur_frm.docname,
                     "loan_name": cur_frm.docname
                 },
@@ -172,6 +172,9 @@ frappe.ui.form.on("Bank Loan Repayment Schedule", "make_payment", function(frm,c
     je["voucher_type"] = "Bank Entry";
     je["reference_doctype"] = "Bank Loan";
     je["reference_link"] = cur_frm.doc.name;
+    je["total_payment"] = d.total_payment;
+    je["interest_amount"] = d.interest_amount;
+    je["principal_amount"] = d.principal_amount;
     je["cheque_no"] = cur_frm.doc.name;
     je["bill_no"] = d.name;
     je["cheque_date"] = d.payment_date;
