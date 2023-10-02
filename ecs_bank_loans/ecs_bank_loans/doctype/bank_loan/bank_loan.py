@@ -27,6 +27,8 @@ class BankLoan(Document):
 		self.make_journal_entry()
 		frappe.set_value('Bank Loan', self.name, 'disbursed_amount', self.loan_amount)
 
+
+		#test
 	@frappe.whitelist()
 	def validate(self):
 		self.calculate_repayment_and_interest_amount()
