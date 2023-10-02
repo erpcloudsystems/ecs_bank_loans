@@ -24,6 +24,7 @@
   "loan_early_payment_commission",
   "loan_amount",
   "net_loan_amount",
+  "type_of_interest",
   "rate_of_interest",
   "fixed_interest",
   "interest_amount",
@@ -498,6 +499,12 @@
    "options": "Bank Loan",
    "print_hide": 1,
    "read_only": 1
+  },
+  {
+   "fieldname": "type_of_interest",
+   "fieldtype": "Select",
+   "label": "Type Of Interest",
+   "options": "\nDecreasing\nFixed"
   }
  ],
  "index_web_pages_for_search": 1,
@@ -508,10 +515,11 @@
    "link_fieldname": "reference_link"
   }
  ],
- "modified": "2021-12-05 13:53:10.893759",
+ "modified": "2023-09-18 16:45:49.840543",
  "modified_by": "Administrator",
  "module": "ECS Bank Loans",
  "name": "Bank Loan",
+ "naming_rule": "By \"Naming Series\" field",
  "owner": "Administrator",
  "permissions": [
   {
@@ -529,6 +537,7 @@
  ],
  "sort_field": "modified",
  "sort_order": "DESC",
+ "states": [],
  "title_field": "loan_type",
  "track_changes": 1
 }
